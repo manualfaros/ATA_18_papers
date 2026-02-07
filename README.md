@@ -76,7 +76,190 @@ Aunque SQLite no requiere claves externas explícitas, la app asume estas relaci
 ✔ Exploración por gen (todos los contrastes)  
 ✔ 🔥 Clustermap con dendrograma (Seaborn + SciPy)  
 ✔ 🔍 Vista especial para genes que empiezan por `SaSP*`
+🗂️ Datos de entrada
 
+La app trabaja con una base de datos SQLite que contiene:
+
+Tablas DEG_* con resultados de RNA-seq
+
+columnas mínimas: gene / gene_id, logFC, padj
+
+Tabla Genes_SA con el universo de genes
+
+Tabla SaSP_list con genes SaSP (opcional, pero recomendado)
+
+Para la ML Suite, además se requiere:
+
+Un archivo CSV con anotaciones funcionales (gene, functional_group)
+
+🧭 Flujo general de análisis
+
+Identificar genes diferencialmente expresados
+
+Visualizar perfiles de expresión
+
+Agrupar genes por similitud
+
+Explorar relaciones de coexpresión
+
+Inferir función mediante ML
+
+Las pestañas están ordenadas siguiendo este flujo lógico.
+
+📑 Pestañas de la app
+🌋 1. Volcano + DEGs
+
+Qué hace
+Muestra genes diferencialmente expresados en un contraste concreto.
+
+Matemáticamente
+Cada gen se compara contra la hipótesis de no cambio:
+
+eje X → log2 Fold Change
+
+eje Y → −log10(p-valor)
+
+👉 No compara genes entre sí.
+
+Pregunta clave
+
+¿Qué genes cambian más en este experimento?
+
+🔍 2. Explorador por gen
+
+Qué hace
+Permite inspeccionar el perfil de un gen a través de todos los contrastes.
+
+Matemáticamente
+Es una visualización directa de un vector (logFC por contraste).
+No hay inferencia ni clustering.
+
+Pregunta clave
+
+¿Cómo se comporta este gen en todos los experimentos?
+
+🔥 3. Heatmap global
+
+Qué hace
+Visualiza patrones globales de expresión y agrupa genes por similitud.
+
+Matemáticamente
+Cada gen es un vector.
+Se calculan distancias entre vectores para:
+
+ordenar genes
+
+o agruparlos en clusters
+
+Pregunta clave
+
+¿Qué genes tienen perfiles de expresión parecidos?
+
+🧬 4. Heatmap SaSP
+
+Qué hace
+Aplica el mismo análisis del heatmap global, pero solo sobre genes SaSP.
+
+Matemáticamente
+La operación es la misma (distancias entre perfiles),
+pero restringida a un subconjunto funcional.
+
+Pregunta clave
+
+¿Los SaSP forman módulos coherentes o subgrupos?
+
+🔗 5. Coexpresión
+
+Qué hace
+Explora relaciones entre genes SaSP y genes SAOUHSC.
+
+Matemáticamente
+Calcula correlación de Pearson entre pares de genes:
+
+comparación uno a uno
+
+no clustering global
+
+Permite identificar:
+
+genes vecinos
+
+hubs de coexpresión
+
+posibles reguladores compartidos
+
+Pregunta clave
+
+¿Qué genes se regulan de forma coordinada?
+
+🤖 6. ML Suite (última pestaña)
+
+Qué hace
+Predice funciones biológicas a partir de perfiles de expresión.
+
+Incluye tres enfoques:
+
+📊 Clasificación supervisada (Random Forest)
+
+Aprende reglas que conectan perfiles → funciones
+
+Produce predicciones con confianza
+
+Muestra qué contrastes son más informativos
+
+🔬 Clustering + enriquecimiento (K-means)
+
+Agrupa genes por patrón promedio
+
+Detecta funciones sobre-representadas en cada cluster
+
+Asigna funciones a genes no caracterizados
+
+🎯 Ensemble
+
+Combina ambos métodos
+
+Prioriza predicciones consistentes y robustas
+
+Matemáticamente
+Aquí no se comparan genes entre sí,
+sino perfiles de expresión contra etiquetas funcionales.
+
+Pregunta clave
+
+¿Qué función biológica sugiere este patrón de expresión?
+
+🧮 Resumen matemático rápido
+Análisis	Operación principal	Tipo de comparación
+Volcano	Contraste vs cero	Gen individual
+Heatmap	Distancia	Global (muchos genes)
+Coexpresión	Correlación	Par a par
+K-means	Distancia a centroides	Módulos
+Random Forest	Reglas predictivas	Perfil → función
+
+
+
+Asegúrate de:
+
+tener la base de datos SQLite accesible
+
+usar Python ≥ 3.9
+
+tener instaladas las dependencias habituales (streamlit, pandas, scikit-learn, plotly, scipy)
+
+🎯 Objetivo final
+
+Esta app no busca solo listas de genes, sino:
+
+estructuras
+
+módulos
+
+relaciones
+
+y predicciones funcionales
+
+a partir de datos transcriptómicos complejos, de forma interpretable y guiada.
 ---
 
 # ▶️ Cómo ejecutar la app localmente
@@ -86,4 +269,5 @@ Aunque SQLite no requiere claves externas explícitas, la app asume estas relaci
 ```bash
 pip install -r requirements.txt
 
-
+2. 🚀 
+streamlit run transcriptomica_ML_SUITE_COMPLETA_con_ayuda_matematica.py
