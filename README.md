@@ -66,6 +66,10 @@ Aunque SQLite no requiere claves externas explícitas, la app asume estas relaci
 
 ---
 
+Para la ML Suite, además se requiere:
+
+Un archivo CSV con anotaciones funcionales (gene, functional_group)
+
 # 🎨 Funcionalidades de la app
 
 ✔ Carga automática de todas las tablas DEG de la base de datos  
@@ -76,23 +80,14 @@ Aunque SQLite no requiere claves externas explícitas, la app asume estas relaci
 ✔ Exploración por gen (todos los contrastes)  
 ✔ 🔥 Clustermap con dendrograma (Seaborn + SciPy)  
 ✔ 🔍 Vista especial para genes que empiezan por `SaSP*`
-🗂️ Datos de entrada
 
-La app trabaja con una base de datos SQLite que contiene:
 
-Tablas DEG_* con resultados de RNA-seq
 
-columnas mínimas: gene / gene_id, logFC, padj
 
-Tabla Genes_SA con el universo de genes
 
-Tabla SaSP_list con genes SaSP (opcional, pero recomendado)
 
-Para la ML Suite, además se requiere:
+# 🧭 Flujo general de análisis
 
-Un archivo CSV con anotaciones funcionales (gene, functional_group)
-
-🧭 Flujo general de análisis
 
 Identificar genes diferencialmente expresados
 
@@ -106,7 +101,9 @@ Inferir función mediante ML
 
 Las pestañas están ordenadas siguiendo este flujo lógico.
 
-📑 Pestañas de la app
+
+# 📑  Pestañas de la app
+
 🌋 1. Volcano + DEGs
 
 Qué hace
@@ -125,7 +122,8 @@ Pregunta clave
 
 ¿Qué genes cambian más en este experimento?
 
-🔍 2. Explorador por gen
+
+# 🔍 2. Explorador por gen
 
 Qué hace
 Permite inspeccionar el perfil de un gen a través de todos los contrastes.
@@ -138,7 +136,8 @@ Pregunta clave
 
 ¿Cómo se comporta este gen en todos los experimentos?
 
-🔥 3. Heatmap global
+
+# 🔥 3. Heatmap global
 
 Qué hace
 Visualiza patrones globales de expresión y agrupa genes por similitud.
@@ -155,7 +154,8 @@ Pregunta clave
 
 ¿Qué genes tienen perfiles de expresión parecidos?
 
-🧬 4. Heatmap SaSP
+
+# 🧬 4. Heatmap SaSP
 
 Qué hace
 Aplica el mismo análisis del heatmap global, pero solo sobre genes SaSP.
@@ -168,7 +168,8 @@ Pregunta clave
 
 ¿Los SaSP forman módulos coherentes o subgrupos?
 
-🔗 5. Coexpresión
+
+# 🔗 5. Coexpresión
 
 Qué hace
 Explora relaciones entre genes SaSP y genes SAOUHSC.
@@ -192,14 +193,16 @@ Pregunta clave
 
 ¿Qué genes se regulan de forma coordinada?
 
-🤖 6. ML Suite (última pestaña)
+
+# 🤖 6. ML Suite (última pestaña)
 
 Qué hace
 Predice funciones biológicas a partir de perfiles de expresión.
 
 Incluye tres enfoques:
 
-📊 Clasificación supervisada (Random Forest)
+
+ 📊 **Clasificación supervisada (Random Forest)**
 
 Aprende reglas que conectan perfiles → funciones
 
@@ -207,7 +210,8 @@ Produce predicciones con confianza
 
 Muestra qué contrastes son más informativos
 
-🔬 Clustering + enriquecimiento (K-means)
+
+🔬 **Clustering + enriquecimiento (K-means)**
 
 Agrupa genes por patrón promedio
 
@@ -215,7 +219,8 @@ Detecta funciones sobre-representadas en cada cluster
 
 Asigna funciones a genes no caracterizados
 
-🎯 Ensemble
+
+🎯 **Ensemble**
 
 Combina ambos métodos
 
@@ -229,13 +234,14 @@ Pregunta clave
 
 ¿Qué función biológica sugiere este patrón de expresión?
 
-🧮 Resumen matemático rápido
-Análisis	Operación principal	Tipo de comparación
-Volcano	Contraste vs cero	Gen individual
-Heatmap	Distancia	Global (muchos genes)
-Coexpresión	Correlación	Par a par
-K-means	Distancia a centroides	Módulos
-Random Forest	Reglas predictivas	Perfil → función
+🧮 **Resumen matemático rápido**
+|Análisis | Operación principal	| Tipo de comparación|
+|-----------|---------------------|----------------------|
+|Volcano | Contraste vs cero | Gen individual|
+|Heatmap | Distancia	Global | (muchos genes)|
+|Coexpresión |	Correlación | Par a par|
+|K-means | Distancia a centroides | Módulos|
+|Random Forest | Reglas predictivas | Perfil → función|
 
 
 
@@ -251,15 +257,8 @@ tener instaladas las dependencias habituales (streamlit, pandas, scikit-learn, p
 
 Esta app no busca solo listas de genes, sino:
 
-estructuras
-
-módulos
-
-relaciones
-
-y predicciones funcionales
-
-a partir de datos transcriptómicos complejos, de forma interpretable y guiada.
+**estructuras, módulos, relaciones y predicciones funcionales
+a partir de datos transcriptómicos complejos, de forma interpretable y guiada.**
 ---
 
 # ▶️ Cómo ejecutar la app localmente
